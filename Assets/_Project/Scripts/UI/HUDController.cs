@@ -1,3 +1,4 @@
+using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 using AlgoDungeon.Core;
@@ -15,9 +16,11 @@ namespace AlgoDungeon.UI
         [SerializeField] private TextMeshProUGUI swapsText;
         [SerializeField] private TextMeshProUGUI algorithmNameText;
         [SerializeField] private GameObject winPanel;
+        [SerializeField] private Image[] starImages;
 
         private int comparisons;
         private int swaps;
+
 
         private void OnEnable()
         {
@@ -58,7 +61,13 @@ namespace AlgoDungeon.UI
         private void HandleRoomCompleted(int stars)
         {
             if (winPanel) winPanel.SetActive(true);
-            Debug.Log($"[HUD] Νίκη! {stars} ⭐");
+
+            for (int i = 0; i < starImages.Length; i++)
+            {
+                starImages[i].gameObject.SetActive(i < stars);
+            }
+
+            Debug.Log($"[HUD] Νίκη! {stars} stars");
         }
 
         private void HandleAlgorithmStarted(string name)

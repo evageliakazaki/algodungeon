@@ -11,19 +11,28 @@ namespace AlgoDungeon.Sorting
         public virtual void Initialize(ArrayManager manager)
         {
             arrayManager = manager;
-            scoreTracker = FindFirstObjectByType<ScoreTracker>();
+            scoreTracker = FindAnyObjectByType<ScoreTracker>();
         }
 
-        // Κάθε αλγόριθμος ορίζει δικούς του κανόνες
         public abstract void HandleTileInteraction(MonsterTile tile);
+
+        protected virtual int CalculateStars()
+        {
+            return 3;
+        }
 
         protected void CheckCompletion()
         {
-            if (arrayManager.IsSorted())
+            if (!arrayManager.IsSorted())
+                return;
+
+            foreach (var tile in arrayManager.Tiles)
             {
-                int stars = scoreTracker.CalculateStars(arrayManager.Data);
-                GameEvents.RoomCompleted(stars);
+                tile.SetState(TileState.Sorted);
             }
+
+            int stars = CalculateStars();
+            GameEvents.RoomCompleted(stars);
         }
     }
 }

@@ -18,53 +18,61 @@ namespace AlgoDungeon.Sorting
         [SerializeField] private SpriteRenderer spriteRenderer;
 
         [Header("State Colors")]
-        [SerializeField] private Color idleColor      = Color.white;
         [SerializeField] private Color selectedColor  = Color.yellow;
         [SerializeField] private Color comparingColor = new Color(1f, 0.6f, 0f);
         [SerializeField] private Color sortedColor    = Color.green;
 
         private TileState state = TileState.Idle;
         private ArrayManager arrayManager;
+        private Color baseColor;
 
         public void Initialize(int value, int index, ArrayManager manager)
         {
-            Value        = value;
+            Value = value;
             CurrentIndex = index;
             arrayManager = manager;
-            valueText.text = value.ToString();
+
+            baseColor = GetColorByValue(value);
+
+            if (valueText != null)
+                valueText.text = value.ToString();
+
             SetState(TileState.Idle);
         }
 
         public void SetState(TileState newState)
         {
             state = newState;
+
+            if (spriteRenderer == null)
+                return;
+
             spriteRenderer.color = newState switch
             {
                 TileState.Selected  => selectedColor,
                 TileState.Comparing => comparingColor,
                 TileState.Sorted    => sortedColor,
-                _                   => idleColor
+                _                   => baseColor
             };
 
-            // FIX: Στέλνουμε το event όταν ένα tile γίνεται Sorted,
-            // ώστε το HUD / ScoreTracker / άλλα systems να ενημερώνονται.
             if (newState == TileState.Sorted)
                 GameEvents.TileMarkedSorted(CurrentIndex);
         }
 
-        public TileState GetState() => state;
+        public TileState GetState()
+        {
+            return state;
+        }
 
-        // Καλείται όταν ο παίκτης πατήσει E δίπλα στο τέρας
         public void OnInteract()
         {
             arrayManager?.OnTileInteracted(this);
         }
 
-        // Smooth animation κίνησης σε νέα θέση
         public IEnumerator MoveTo(Vector3 targetPosition, float duration)
         {
-            Vector3 start   = transform.position;
-            float   elapsed = 0f;
+            Vector3 start = transform.position;
+            float elapsed = 0f;
 
             while (elapsed < duration)
             {
@@ -73,7 +81,21 @@ namespace AlgoDungeon.Sorting
                 transform.position = Vector3.Lerp(start, targetPosition, t);
                 yield return null;
             }
+
             transform.position = targetPosition;
+        }
+
+        private Color GetColorByValue(int value)
+        {
+            return value switch
+            {
+                1 => new Color(0.4f, 1f, 0.5f),    // πράσινο
+                2 => new Color(0.3f, 0.8f, 1f),    // μπλε
+                4 => new Color(1f, 0.45f, 0.45f),  // κόκκινο
+                5 => new Color(1f, 0.8f, 0.25f),   // κίτρινο
+                8 => new Color(0.8f, 0.45f, 1f),   // μωβ
+                _ => Color.white
+            };
         }
     }
 }

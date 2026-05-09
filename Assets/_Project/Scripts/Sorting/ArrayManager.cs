@@ -41,13 +41,12 @@ namespace AlgoDungeon.Sorting
             }
         }
 
-        // Καλείται από MonsterTile.OnInteract
         public void OnTileInteracted(MonsterTile tile)
         {
+            Debug.Log("ArrayManager πήρε tile: " + tile.Value);
             sortingRoom?.HandleTileInteraction(tile);
         }
 
-        // Φυσική ανταλλαγή δύο tiles
         public void SwapTiles(int indexA, int indexB)
         {
             if (indexA == indexB) return;
@@ -73,6 +72,7 @@ namespace AlgoDungeon.Sorting
         {
             for (int i = 0; i < Tiles.Count - 1; i++)
                 if (Tiles[i].Value > Tiles[i + 1].Value) return false;
+
             return true;
         }
     }
