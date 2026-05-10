@@ -375,10 +375,116 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b28e482d0197bdd4e87ee5a6fcc59958, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AlgoDungeon.Sorting.ArrayManager
-  levelData: {fileID: 11400000, guid: a844ecf73eb31ef4f95d2ae530261acc, type: 2}
+  levelData: {fileID: 11400000, guid: 465224e0c23ef264c9fffe3ac43f2ef4, type: 2}
   monsterTilePrefab: {fileID: 1674916360504067563, guid: c8aec0e3face6cc4a9ceed5336566991, type: 3}
   tilesParent: {fileID: 927410349}
-  sortingRoom: {fileID: 1121665066}
+  sortingRoom: {fileID: 1704947306}
+--- !u!1001 &554589513
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 647063431}
+    m_Modifications:
+    - target: {fileID: 797339221963857588, guid: 4d8e5209dc1c0044b8bb13d604b3bc54, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 140
+      objectReference: {fileID: 0}
+    - target: {fileID: 1649193426647894976, guid: 4d8e5209dc1c0044b8bb13d604b3bc54, type: 3}
+      propertyPath: m_Name
+      value: InGameMenuUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 5070451218159732258, guid: 4d8e5209dc1c0044b8bb13d604b3bc54, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5070451218159732258, guid: 4d8e5209dc1c0044b8bb13d604b3bc54, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5070451218159732258, guid: 4d8e5209dc1c0044b8bb13d604b3bc54, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5070451218159732258, guid: 4d8e5209dc1c0044b8bb13d604b3bc54, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5070451218159732258, guid: 4d8e5209dc1c0044b8bb13d604b3bc54, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5070451218159732258, guid: 4d8e5209dc1c0044b8bb13d604b3bc54, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5070451218159732258, guid: 4d8e5209dc1c0044b8bb13d604b3bc54, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5070451218159732258, guid: 4d8e5209dc1c0044b8bb13d604b3bc54, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5070451218159732258, guid: 4d8e5209dc1c0044b8bb13d604b3bc54, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5070451218159732258, guid: 4d8e5209dc1c0044b8bb13d604b3bc54, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5070451218159732258, guid: 4d8e5209dc1c0044b8bb13d604b3bc54, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5070451218159732258, guid: 4d8e5209dc1c0044b8bb13d604b3bc54, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5070451218159732258, guid: 4d8e5209dc1c0044b8bb13d604b3bc54, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5070451218159732258, guid: 4d8e5209dc1c0044b8bb13d604b3bc54, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5070451218159732258, guid: 4d8e5209dc1c0044b8bb13d604b3bc54, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5070451218159732258, guid: 4d8e5209dc1c0044b8bb13d604b3bc54, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5070451218159732258, guid: 4d8e5209dc1c0044b8bb13d604b3bc54, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5070451218159732258, guid: 4d8e5209dc1c0044b8bb13d604b3bc54, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5070451218159732258, guid: 4d8e5209dc1c0044b8bb13d604b3bc54, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5070451218159732258, guid: 4d8e5209dc1c0044b8bb13d604b3bc54, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4d8e5209dc1c0044b8bb13d604b3bc54, type: 3}
+--- !u!224 &554589514 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5070451218159732258, guid: 4d8e5209dc1c0044b8bb13d604b3bc54, type: 3}
+  m_PrefabInstance: {fileID: 554589513}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &561742471
 GameObject:
   m_ObjectHideFlags: 0
@@ -876,19 +982,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 604724215}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 604724217}
-        m_TargetAssemblyTypeName: RestartButton, Assembly-CSharp
-        m_MethodName: RestartLevel
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &604724215
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1051,6 +1145,7 @@ RectTransform:
   - {fileID: 2052957779}
   - {fileID: 788205766}
   - {fileID: 1259215512}
+  - {fileID: 554589514}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1074,10 +1169,17 @@ MonoBehaviour:
   swapsText: {fileID: 2052957780}
   algorithmNameText: {fileID: 1357264382}
   winPanel: {fileID: 788205765}
+  resultText: {fileID: 66845293}
   starImages:
   - {fileID: 617449006}
   - {fileID: 737166678}
   - {fileID: 315710723}
+  resultButton: {fileID: 604724214}
+  resultButtonText: {fileID: 1771341345}
+  mainMenuButton: {fileID: 0}
+  mainMenuButtonText: {fileID: 0}
+  firstSelectionLevelName: Selection_Level_01
+  mainMenuSceneName: MainMenu
 --- !u!114 &647063433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1646,51 +1748,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 997384346}
   m_CullTransparentMesh: 1
---- !u!1 &1121665064
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1121665065}
-  - component: {fileID: 1121665066}
-  m_Layer: 0
-  m_Name: BubbleShortRoom
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1121665065
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1121665064}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.15892, y: -0.71634, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1121665066
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1121665064}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8697ec62c85fdd54e91f8bb5768ac109, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AlgoDungeon.Sorting.BubbleSortRoom
-  swapAnimationDuration: 0.3
 --- !u!1 &1258342987
 GameObject:
   m_ObjectHideFlags: 0
@@ -1903,7 +1960,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Bubble Sort
+  m_text: 'Selection Sort
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2056,6 +2115,52 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.05, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1704947305
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1704947307}
+  - component: {fileID: 1704947306}
+  m_Layer: 0
+  m_Name: SelectionSortRoom
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1704947306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704947305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b2ae89eaaeb14d42b2d2330c85d5d60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AlgoDungeon.Sorting.SelectionSortRoom
+  swapAnimationDuration: 0.3
+  maxWrongMoves: 3
+--- !u!4 &1704947307
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704947305}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2342,10 +2447,10 @@ SceneRoots:
   - {fileID: 947728046}
   - {fileID: 974921072}
   - {fileID: 416926778}
-  - {fileID: 1121665065}
   - {fileID: 927410349}
   - {fileID: 647063431}
   - {fileID: 599823085}
   - {fileID: 1258342990}
   - {fileID: 1395068760}
   - {fileID: 574415849}
+  - {fileID: 1704947307}

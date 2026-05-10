@@ -3,113 +3,147 @@ using AlgoDungeon.Core;
 
 namespace AlgoDungeon.Sorting
 {
-    /// <summary>
-    /// Δωμάτιο Selection Sort.
-    /// Ο παίκτης βρίσκει το ελάχιστο στοιχείο και το swap-άρει
-    /// με το πρώτο unsorted στοιχείο.
-    /// </summary>
     public class SelectionSortRoom : SortingRoomBase
     {
         [SerializeField] private float swapAnimationDuration = 0.3f;
+        [SerializeField] private int maxWrongMoves = 3;
 
-        private int sortedUpTo = 0;       // όλα τα tiles πριν από αυτή τη θέση είναι sorted
-        private MonsterTile minCandidate; // το tile που θεωρείται τωρινό ελάχιστο
-        private MonsterTile firstOfPass;  // η αρχή του pass (το "slot" που θα γεμίσει)
-
-        public override void Initialize(ArrayManager manager)
-        {
-            base.Initialize(manager);
-            sortedUpTo = 0;
-            MarkSortedTiles();
-            HighlightCurrentSlot();
-        }
+        private MonsterTile firstSelected;
+        private int currentPosition = 0;
+        private int wrongMoves = 0;
+        private bool roomEnded = false;
 
         public override void HandleTileInteraction(MonsterTile tile)
         {
-            // Αγνοούμε ήδη-ταξινομημένα tiles
-            if (tile.CurrentIndex < sortedUpTo)
-            {
-                Debug.Log("Selection Sort: αυτό το στοιχείο είναι ήδη ταξινομημένο!");
+            if (roomEnded)
                 return;
-            }
 
-            // Πρώτη επιλογή pass — ορίζουμε το "slot" (firstOfPass)
-            if (firstOfPass == null)
+            if (arrayManager == null)
+                return;
+
+            if (arrayManager.IsSorted())
+                return;
+
+            if (firstSelected == null)
             {
-                firstOfPass = arrayManager.Tiles[sortedUpTo];
-                minCandidate = tile;
+                if (tile.CurrentIndex != currentPosition)
+                {
+                    GameEvents.TilesCompared(currentPosition, tile.CurrentIndex);
+
+                    tile.SetState(TileState.Comparing);
+
+                    RegisterWrongMove(
+                        $"Λάθος επιλογή! Πρέπει πρώτα να επιλέξεις τη θέση {currentPosition}."
+                    );
+
+                    Invoke(nameof(ResetStates), 0.4f);
+                    return;
+                }
+
+                firstSelected = tile;
                 tile.SetState(TileState.Selected);
                 return;
             }
 
-            // Σύγκριση με τον τωρινό υποψήφιο ελαχίστου
-            GameEvents.TilesCompared(minCandidate.CurrentIndex, tile.CurrentIndex);
-
-            if (tile.Value < minCandidate.Value)
+            if (firstSelected == tile)
             {
-                minCandidate.SetState(TileState.Idle);
-                minCandidate = tile;
-                tile.SetState(TileState.Selected);
-                Debug.Log($"Selection Sort: νέο ελάχιστο = {tile.Value}");
+                firstSelected.SetState(TileState.Idle);
+                firstSelected = null;
+                return;
+            }
+
+            int selectedIndex = firstSelected.CurrentIndex;
+            int chosenIndex = tile.CurrentIndex;
+
+            GameEvents.TilesCompared(selectedIndex, chosenIndex);
+
+            firstSelected.SetState(TileState.Comparing);
+            tile.SetState(TileState.Comparing);
+
+            int minIndex = FindMinIndexFrom(currentPosition);
+
+            if (chosenIndex == minIndex)
+            {
+                Debug.Log("Σωστή επιλογή minimum!");
+
+                if (currentPosition != minIndex)
+                {
+                    arrayManager.SwapTiles(currentPosition, minIndex);
+                }
+
+                currentPosition++;
             }
             else
             {
-                tile.SetState(TileState.Comparing);
-                Invoke(nameof(ResetComparing), 0.3f);
+                RegisterWrongMove(
+                    $"Λάθος επιλογή! Το μικρότερο στοιχείο είναι στη θέση {minIndex}, όχι στη θέση {chosenIndex}."
+                );
             }
+
+            firstSelected = null;
+
+            Invoke(nameof(DelayedCheck), swapAnimationDuration + 0.05f);
         }
 
-        /// <summary>
-        /// Ο παίκτης επιβεβαιώνει το swap (π.χ. πατώντας Enter/Space όταν
-        /// έχει ήδη επιλέξει το ελάχιστο). Συνδέστε αυτό σε ένα UI Button
-        /// ή σε ένα KeyCode.Return handler στη scene.
-        /// </summary>
-        public void ConfirmSwap()
+        private int FindMinIndexFrom(int startIndex)
         {
-            if (minCandidate == null || firstOfPass == null) return;
+            int minIndex = startIndex;
 
-            int slotIdx = firstOfPass.CurrentIndex; // = sortedUpTo
-            int minIdx  = minCandidate.CurrentIndex;
-
-            if (slotIdx != minIdx)
+            for (int i = startIndex + 1; i < arrayManager.Tiles.Count; i++)
             {
-                arrayManager.SwapTiles(slotIdx, minIdx);
+                if (arrayManager.Tiles[i].Value < arrayManager.Tiles[minIndex].Value)
+                {
+                    minIndex = i;
+                }
             }
 
-            // Το tile στη θέση sortedUpTo είναι τώρα στη σωστή θέση
-            arrayManager.Tiles[sortedUpTo].SetState(TileState.Sorted);
-            GameEvents.TileMarkedSorted(sortedUpTo);
-            sortedUpTo++;
-
-            firstOfPass  = null;
-            minCandidate = null;
-
-            Invoke(nameof(AfterSwap), swapAnimationDuration + 0.05f);
+            return minIndex;
         }
 
-        private void AfterSwap()
+        private void RegisterWrongMove(string message)
         {
-            HighlightCurrentSlot();
+            wrongMoves++;
+
+            Debug.Log($"{message} Λάθη: {wrongMoves}/{maxWrongMoves}");
+
+            if (wrongMoves >= maxWrongMoves)
+            {
+                roomEnded = true;
+                firstSelected = null;
+
+                Debug.Log("Game Over! Έκανες 3 λάθη.");
+
+                GameEvents.RoomCompleted(0);
+            }
+        }
+
+        private void DelayedCheck()
+        {
+            if (roomEnded)
+                return;
+
+            ResetStates();
             CheckCompletion();
         }
 
-        private void HighlightCurrentSlot()
-        {
-            if (sortedUpTo < arrayManager.Tiles.Count)
-                arrayManager.Tiles[sortedUpTo].SetState(TileState.Selected);
-        }
-
-        private void MarkSortedTiles()
-        {
-            for (int i = 0; i < sortedUpTo; i++)
-                arrayManager.Tiles[i].SetState(TileState.Sorted);
-        }
-
-        private void ResetComparing()
+        private void ResetStates()
         {
             foreach (var t in arrayManager.Tiles)
-                if (t.GetState() == TileState.Comparing)
+            {
+                if (t.GetState() != TileState.Sorted)
                     t.SetState(TileState.Idle);
+            }
+        }
+
+        protected override int CalculateStars()
+        {
+            if (wrongMoves == 0)
+                return 3;
+
+            if (wrongMoves == 1)
+                return 2;
+
+            return 1;
         }
     }
 }

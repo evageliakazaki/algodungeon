@@ -32,6 +32,7 @@ namespace AlgoDungeon.Sorting
             }
 
             int stars = CalculateStars();
+
             GameEvents.RoomCompleted(stars);
         }
     }

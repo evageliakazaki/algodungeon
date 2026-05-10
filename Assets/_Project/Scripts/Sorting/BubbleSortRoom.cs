@@ -6,12 +6,23 @@ namespace AlgoDungeon.Sorting
     public class BubbleSortRoom : SortingRoomBase
     {
         [SerializeField] private float swapAnimationDuration = 0.3f;
+        [SerializeField] private int maxWrongMoves = 3;
 
         private MonsterTile firstSelected;
-        private int wrongComparisons = 0;
+        private int wrongMoves = 0;
+        private bool roomEnded = false;
 
         public override void HandleTileInteraction(MonsterTile tile)
         {
+            if (roomEnded)
+                return;
+
+            if (arrayManager == null)
+                return;
+
+            if (arrayManager.IsSorted())
+                return;
+
             if (firstSelected == null)
             {
                 firstSelected = tile;
@@ -31,11 +42,15 @@ namespace AlgoDungeon.Sorting
 
             if (Mathf.Abs(idxA - idxB) != 1)
             {
-                wrongComparisons++;
-                Debug.Log("Λάθος σύγκριση: μπορείς να συγκρίνεις μόνο γειτονικά στοιχεία.");
+                GameEvents.TilesCompared(idxA, idxB);
 
-                firstSelected.SetState(TileState.Idle);
+                firstSelected.SetState(TileState.Comparing);
+                tile.SetState(TileState.Comparing);
+
+                RegisterWrongMove("Λάθος επιλογή! Στο Bubble Sort συγκρίνουμε μόνο γειτονικά στοιχεία.");
+
                 firstSelected = null;
+                Invoke(nameof(ResetComparingStates), 0.4f);
                 return;
             }
 
@@ -56,18 +71,37 @@ namespace AlgoDungeon.Sorting
             }
             else
             {
-                wrongComparisons++;
-                Debug.Log("Λάθος/περιττή σύγκριση: τα στοιχεία ήταν ήδη στη σωστή σειρά.");
+                RegisterWrongMove("Λάθος/περιττή σύγκριση! Αυτά τα στοιχεία είναι ήδη στη σωστή σειρά.");
             }
 
             firstSelected = null;
 
-            float delay = didSwap ? swapAnimationDuration + 0.05f : 0.05f;
+            float delay = didSwap ? swapAnimationDuration + 0.05f : 0.4f;
             Invoke(nameof(DelayedCheck), delay);
+        }
+
+        private void RegisterWrongMove(string message)
+        {
+            wrongMoves++;
+
+            Debug.Log($"{message} Λάθη: {wrongMoves}/{maxWrongMoves}");
+
+            if (wrongMoves >= maxWrongMoves)
+            {
+                roomEnded = true;
+                firstSelected = null;
+
+                Debug.Log("Game Over! Έκανες 3 λάθη.");
+
+                GameEvents.RoomCompleted(0);
+            }
         }
 
         private void DelayedCheck()
         {
+            if (roomEnded)
+                return;
+
             ResetComparingStates();
             CheckCompletion();
         }
@@ -76,17 +110,17 @@ namespace AlgoDungeon.Sorting
         {
             foreach (var t in arrayManager.Tiles)
             {
-                if (t.GetState() == TileState.Comparing)
+                if (t.GetState() != TileState.Sorted)
                     t.SetState(TileState.Idle);
             }
         }
 
         protected override int CalculateStars()
         {
-            if (wrongComparisons == 0)
+            if (wrongMoves == 0)
                 return 3;
 
-            if (wrongComparisons == 1)
+            if (wrongMoves == 1)
                 return 2;
 
             return 1;
