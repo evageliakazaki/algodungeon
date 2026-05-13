@@ -98,7 +98,7 @@ namespace AlgoDungeon.UI
 
             Debug.Log(stars <= 0
                 ? "[HUD] Game Over!"
-                : $"[HUD] Νίκη! {stars} stars");
+                : $"[HUD] Victory! {stars} stars");
         }
 
         private void ShowVictory(int stars)
@@ -107,6 +107,9 @@ namespace AlgoDungeon.UI
                 resultText.text = "Dungeon Cleared!";
 
             SetStars(stars);
+
+            string currentSceneName = SceneManager.GetActiveScene().name;
+            GameProgressManager.CompleteLevel(currentSceneName, stars);
 
             if (IsLastLevel())
             {

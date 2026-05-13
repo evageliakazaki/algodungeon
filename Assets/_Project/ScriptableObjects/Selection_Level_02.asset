@@ -17,8 +17,8 @@ MonoBehaviour:
   algorithm: 1
   inputArray: 090000000400000007000000010000000600000002000000
   startPosition: {x: -2.4, y: 0}
-  tileStartPosition: {x: -2.4, y: 1.2}
-  tileSpacing: 1.2
+  tileStartPosition: {x: -2.875, y: 1.2}
+  tileSpacing: 1.15
   tutorialText: 
   pseudocodeText: 
   threeStarsMaxMoves: 0
