@@ -32,6 +32,21 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/Bubble_Level_01.unity
     guid: 405fba0c8792cff4e8922818c682d9b2
+  - enabled: 1
+    path: Assets/_Project/Scenes/Bubble_Tutorial.unity
+    guid: 003fd6bb04d42614fa5622929a192de0
+  - enabled: 1
+    path: Assets/_Project/Scenes/Bubble_Level_02.unity
+    guid: a552b16d4289af948a40ad4a58d3565f
+  - enabled: 1
+    path: Assets/_Project/Scenes/Bubble_Level_03.unity
+    guid: 96f7d4972ac956e4196cb92b5d152dbc
+  - enabled: 1
+    path: Assets/_Project/Scenes/Bubble_Level_04.unity
+    guid: fe08401bcdbb9a248829039da4774732
+  - enabled: 1
+    path: Assets/_Project/Scenes/BubbleLevelSelect.unity
+    guid: 209fabeb2b6930d46b195b29e799a089
   m_configObjects:
     com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

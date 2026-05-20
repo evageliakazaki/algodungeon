@@ -7,6 +7,9 @@ namespace AlgoDungeon.UI
     {
         [Header("Scene Names")]
         [SerializeField] private string algorithmSelectScene = "AlgorithmSelect";
+        [SerializeField] private string bubbleLevelSelectScene = "BubbleLevelSelect";
+        [SerializeField] private string selectionLevelSelectScene = "SelectionLevelSelect";
+        [SerializeField] private string insertionLevelSelectScene = "InsertionLevelSelect";
 
         [Header("Panels")]
         [SerializeField] private GameObject menuPanel;
@@ -65,6 +68,26 @@ namespace AlgoDungeon.UI
 
         public void ConfirmBackToAlgorithmSelect()
         {
+            string currentScene = SceneManager.GetActiveScene().name;
+
+            if (currentScene.StartsWith("Bubble_Level_") || currentScene == "Bubble_Tutorial")
+            {
+                SceneManager.LoadScene(bubbleLevelSelectScene);
+                return;
+            }
+
+            if (currentScene.StartsWith("Selection_Level_") || currentScene == "SelectionTutorial")
+            {
+                SceneManager.LoadScene(selectionLevelSelectScene);
+                return;
+            }
+
+            if (currentScene.StartsWith("Insertion_Level_") || currentScene == "Insertion_Tutorial")
+            {
+                SceneManager.LoadScene(insertionLevelSelectScene);
+                return;
+            }
+
             SceneManager.LoadScene(algorithmSelectScene);
         }
 

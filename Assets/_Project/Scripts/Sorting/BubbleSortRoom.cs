@@ -12,6 +12,20 @@ namespace AlgoDungeon.Sorting
         private int wrongMoves = 0;
         private bool roomEnded = false;
 
+        public override void Initialize(ArrayManager manager)
+        {
+            base.Initialize(manager);
+
+            firstSelected = null;
+            wrongMoves = 0;
+            roomEnded = false;
+
+            if (arrayManager != null && arrayManager.IsSorted())
+            {
+                CompleteRoom();
+            }
+        }
+
         public override void HandleTileInteraction(MonsterTile tile)
         {
             if (roomEnded)
@@ -21,6 +35,12 @@ namespace AlgoDungeon.Sorting
                 return;
 
             if (arrayManager.IsSorted())
+            {
+                CompleteRoom();
+                return;
+            }
+
+            if (tile == null)
                 return;
 
             if (firstSelected == null)
@@ -91,6 +111,8 @@ namespace AlgoDungeon.Sorting
                 roomEnded = true;
                 firstSelected = null;
 
+                ResetComparingStates();
+
                 Debug.Log("Game Over! Έκανες 3 λάθη.");
 
                 GameEvents.RoomCompleted(0);
@@ -103,11 +125,40 @@ namespace AlgoDungeon.Sorting
                 return;
 
             ResetComparingStates();
+
+            if (arrayManager != null && arrayManager.IsSorted())
+            {
+                CompleteRoom();
+                return;
+            }
+
+            CheckCompletion();
+        }
+
+        private void CompleteRoom()
+        {
+            if (roomEnded)
+                return;
+
+            roomEnded = true;
+            firstSelected = null;
+
+            if (arrayManager != null && arrayManager.Tiles != null)
+            {
+                foreach (var tile in arrayManager.Tiles)
+                {
+                    tile.SetState(TileState.Sorted);
+                }
+            }
+
             CheckCompletion();
         }
 
         private void ResetComparingStates()
         {
+            if (arrayManager == null || arrayManager.Tiles == null)
+                return;
+
             foreach (var t in arrayManager.Tiles)
             {
                 if (t.GetState() != TileState.Sorted)

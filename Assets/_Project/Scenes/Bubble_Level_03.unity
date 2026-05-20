@@ -375,7 +375,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b28e482d0197bdd4e87ee5a6fcc59958, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AlgoDungeon.Sorting.ArrayManager
-  levelData: {fileID: 11400000, guid: a844ecf73eb31ef4f95d2ae530261acc, type: 2}
+  levelData: {fileID: 11400000, guid: 06c45013d069c9c4eb4bdb43451dacfa, type: 2}
   monsterTilePrefab: {fileID: 1674916360504067563, guid: c8aec0e3face6cc4a9ceed5336566991, type: 3}
   tilesParent: {fileID: 927410349}
   sortingRoom: {fileID: 1121665066}
@@ -1091,7 +1091,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &788205766
 RectTransform:
   m_ObjectHideFlags: 0

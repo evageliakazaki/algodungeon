@@ -8,7 +8,7 @@ namespace AlgoDungeon.UI
         [Header("Scene Names")]
         [SerializeField] private string mainMenuScene = "MainMenu";
         [SerializeField] private string selectionTutorialScene = "SelectionTutorial";
-        [SerializeField] private string bubbleFirstLevel = "Bubble_Level_01";
+        [SerializeField] private string bubbleLevelSelectScene = "BubbleLevelSelect";
 
         public void PlaySelectionSort()
         {
@@ -17,7 +17,7 @@ namespace AlgoDungeon.UI
 
         public void PlayBubbleSort()
         {
-            SceneManager.LoadScene(bubbleFirstLevel);
+            SceneManager.LoadScene(bubbleLevelSelectScene);
         }
 
         public void BackToMainMenu()

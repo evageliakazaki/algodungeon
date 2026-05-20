@@ -27,11 +27,12 @@ namespace AlgoDungeon.UI
         [SerializeField] private TextMeshProUGUI mainMenuButtonText;
 
         [Header("Level Flow")]
-        [SerializeField] private string firstSelectionLevelName = "Selection_Level_01";
         [SerializeField] private string mainMenuSceneName = "MainMenu";
+        [SerializeField] private string algorithmSelectSceneName = "AlgorithmSelect";
 
         private int comparisons;
         private int swaps;
+        private bool resultShown;
 
         private void OnEnable()
         {
@@ -53,12 +54,25 @@ namespace AlgoDungeon.UI
         {
             comparisons = 0;
             swaps = 0;
+            resultShown = false;
 
             if (winPanel != null)
                 winPanel.SetActive(false);
 
             if (mainMenuButton != null)
+            {
                 mainMenuButton.gameObject.SetActive(false);
+                mainMenuButton.onClick.RemoveAllListeners();
+            }
+
+            if (resultButton != null)
+            {
+                resultButton.gameObject.SetActive(true);
+                resultButton.onClick.RemoveAllListeners();
+            }
+
+            if (resultButtonText != null)
+                resultButtonText.text = "";
 
             SetStars(0);
             UpdateUI();
@@ -84,6 +98,11 @@ namespace AlgoDungeon.UI
 
         private void HandleRoomCompleted(int stars)
         {
+            if (resultShown)
+                return;
+
+            resultShown = true;
+
             if (winPanel != null)
                 winPanel.SetActive(true);
 
@@ -111,7 +130,7 @@ namespace AlgoDungeon.UI
             string currentSceneName = SceneManager.GetActiveScene().name;
             GameProgressManager.CompleteLevel(currentSceneName, stars);
 
-            if (IsLastLevel())
+            if (IsLastLevel(currentSceneName))
             {
                 ShowFinalLevelButtons();
             }
@@ -129,7 +148,13 @@ namespace AlgoDungeon.UI
             SetStars(0);
 
             if (mainMenuButton != null)
+            {
                 mainMenuButton.gameObject.SetActive(false);
+                mainMenuButton.onClick.RemoveAllListeners();
+            }
+
+            if (resultButton != null)
+                resultButton.gameObject.SetActive(true);
 
             if (resultButtonText != null)
                 resultButtonText.text = "Restart";
@@ -140,30 +165,39 @@ namespace AlgoDungeon.UI
         private void ShowNextLevelButton()
         {
             if (mainMenuButton != null)
+            {
                 mainMenuButton.gameObject.SetActive(false);
+                mainMenuButton.onClick.RemoveAllListeners();
+            }
+
+            if (resultButton != null)
+                resultButton.gameObject.SetActive(true);
 
             if (resultButtonText != null)
                 resultButtonText.text = "Next";
 
-            ConfigurePrimaryButton(LoadNextLevel);
+            ConfigurePrimaryButton(LoadNextLevelByName);
         }
 
         private void ShowFinalLevelButtons()
         {
+            if (resultButton != null)
+                resultButton.gameObject.SetActive(true);
+
             if (resultButtonText != null)
                 resultButtonText.text = "Play Again";
 
-            ConfigurePrimaryButton(PlayAgainFromStart);
+            ConfigurePrimaryButton(PlayAgainFromCurrentAlgorithm);
 
             if (mainMenuButton != null)
             {
                 mainMenuButton.gameObject.SetActive(true);
                 mainMenuButton.onClick.RemoveAllListeners();
-                mainMenuButton.onClick.AddListener(GoToMainMenu);
+                mainMenuButton.onClick.AddListener(GoToAlgorithmSelect);
             }
 
             if (mainMenuButtonText != null)
-                mainMenuButtonText.text = "Main Menu";
+                mainMenuButtonText.text = "Algorithm Select";
         }
 
         private void ConfigurePrimaryButton(UnityEngine.Events.UnityAction action)
@@ -177,55 +211,107 @@ namespace AlgoDungeon.UI
 
         private void RestartLevel()
         {
-            Scene currentScene = SceneManager.GetActiveScene();
-            SceneManager.LoadScene(currentScene.buildIndex);
+            string currentSceneName = SceneManager.GetActiveScene().name;
+            SceneManager.LoadScene(currentSceneName);
         }
 
-        private void LoadNextLevel()
+        private void LoadNextLevelByName()
         {
-            int currentIndex = SceneManager.GetActiveScene().buildIndex;
-            int nextIndex = currentIndex + 1;
+            string currentSceneName = SceneManager.GetActiveScene().name;
+            string nextSceneName = GetNextLevelName(currentSceneName);
 
-            if (nextIndex < SceneManager.sceneCountInBuildSettings)
+            if (string.IsNullOrWhiteSpace(nextSceneName))
             {
-                SceneManager.LoadScene(nextIndex);
+                GoToAlgorithmSelect();
+                return;
+            }
+
+            if (Application.CanStreamedLevelBeLoaded(nextSceneName))
+            {
+                SceneManager.LoadScene(nextSceneName);
             }
             else
             {
-                PlayAgainFromStart();
+                Debug.LogWarning($"Δεν βρέθηκε η επόμενη σκηνή: {nextSceneName}. Πηγαίνω στο AlgorithmSelect.");
+                GoToAlgorithmSelect();
             }
         }
 
-        private void PlayAgainFromStart()
+        private void PlayAgainFromCurrentAlgorithm()
         {
-            if (Application.CanStreamedLevelBeLoaded(firstSelectionLevelName))
+            string currentSceneName = SceneManager.GetActiveScene().name;
+            string firstSceneName = GetFirstLevelName(currentSceneName);
+
+            if (Application.CanStreamedLevelBeLoaded(firstSceneName))
             {
-                SceneManager.LoadScene(firstSelectionLevelName);
+                SceneManager.LoadScene(firstSceneName);
             }
             else
             {
-                Debug.LogWarning($"Δεν βρέθηκε η σκηνή {firstSelectionLevelName}. Κάνω restart την τρέχουσα.");
+                Debug.LogWarning($"Δεν βρέθηκε η πρώτη πίστα: {firstSceneName}. Κάνω restart.");
                 RestartLevel();
             }
         }
 
-        private void GoToMainMenu()
+        private void GoToAlgorithmSelect()
         {
+            if (Application.CanStreamedLevelBeLoaded(algorithmSelectSceneName))
+            {
+                SceneManager.LoadScene(algorithmSelectSceneName);
+                return;
+            }
+
             if (Application.CanStreamedLevelBeLoaded(mainMenuSceneName))
             {
                 SceneManager.LoadScene(mainMenuSceneName);
+                return;
             }
-            else
-            {
-                Debug.LogWarning($"Δεν υπάρχει ακόμα σκηνή {mainMenuSceneName}. Προσωρινά πάω στην πρώτη Selection πίστα.");
-                PlayAgainFromStart();
-            }
+
+            RestartLevel();
         }
 
-        private bool IsLastLevel()
+        private bool IsLastLevel(string sceneName)
         {
-            return SceneManager.GetActiveScene().name == "Selection_Level_04";
+            return sceneName.EndsWith("_Level_04");
         }
+
+        private string GetNextLevelName(string currentSceneName)
+        {
+            const string marker = "_Level_";
+
+            int markerIndex = currentSceneName.LastIndexOf(marker);
+
+            if (markerIndex < 0)
+                return null;
+
+            string prefix = currentSceneName.Substring(0, markerIndex);
+            string numberText = currentSceneName.Substring(markerIndex + marker.Length);
+
+            if (!int.TryParse(numberText, out int currentNumber))
+                return null;
+
+            int nextNumber = currentNumber + 1;
+
+            if (nextNumber > 4)
+                return null;
+
+            return $"{prefix}_Level_{nextNumber:00}";
+        }
+
+        private string GetFirstLevelName(string currentSceneName)
+        {
+            const string marker = "_Level_";
+
+            int markerIndex = currentSceneName.LastIndexOf(marker);
+
+            if (markerIndex < 0)
+                return currentSceneName;
+
+            string prefix = currentSceneName.Substring(0, markerIndex);
+
+            return $"{prefix}_Level_01";
+        }
+
         private void UpdateUI()
         {
             if (comparisonsText != null)
